@@ -2,7 +2,7 @@ export function isOpenKey(key: KeyboardEvent['key']): boolean {
   return ['ArrowDown', 'ArrowUp', 'Enter', ' '].includes(key)
 }
 
-export function isTyping(event: KeyboardEvent) {
+export function isTypingLetters(event: KeyboardEvent) {
   const { key, altKey, ctrlKey, metaKey } = event
   return (
     key === 'Backspace' ||

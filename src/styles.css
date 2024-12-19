@@ -6,3 +6,15 @@ body {
   flex-direction: row;
   gap: 20px;
 }
+
+custom-select:not(:defined) {
+  opacity: 0;
+}
+
+color-select:not(:defined) {
+  opacity: 0;
+}
+
+photo-select:not(:defined) {
+  opacity: 0;
+}

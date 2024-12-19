@@ -4,7 +4,7 @@ import {
   getNextIndex,
   hasPreselect,
 } from '../utils'
-import { isOpenKey, isTyping } from '../utils/keyboard'
+import { isOpenKey, isTypingLetters } from '../utils/keyboard'
 import { type Option } from '../types'
 
 const customSelectStyles = `
@@ -35,9 +35,18 @@ const customSelectStyles = `
     position: relative;
   }
 
-  .combobox:hover,
+  .combobox:hover {
+    border-color: rgb(0, 0, 0);
+
+  }
+
   .combobox:focus {
-    border-color: rgb(0, 0, 0)
+    outline: 2px solid rgb(105 185 245 / 80%);
+    outline-offest: -1px;
+  }
+
+  .combobox:focus:hover {
+    outline-color: rgb(105 185 245);
   }
   
   .combobox:after {
@@ -50,7 +59,7 @@ const customSelectStyles = `
   
   .option-list {
     background-color: var(--list-background, white);
-    border: 1px solid black;
+    border: 1px solid rgba(49 52 66 / 35%);
     border-radius: 5px; 
     cursor: pointer;  
     display: none;
@@ -66,7 +75,7 @@ const customSelectStyles = `
   
   .option {
     align-items: center;
-    border-bottom: 1px solid black;
+    border-top: 1px solid rgba(49 52 66 / 10%);
     display: flex;
     justify-content: flex-start;
     min-height: 24px;
@@ -76,11 +85,11 @@ const customSelectStyles = `
   }
   
   .option.preselected {
-    background-color: rgb(0 0 0 / 20%);
+    background-color: rgb(105 185 245 / 25%);
   }
   
-  .option:last-child {
-  	border-bottom: none;
+  .option:first-child {
+  	border-top: none;
   }
   
   .option.selected::before {
@@ -212,6 +221,28 @@ export class CustomSelect extends HTMLElement {
     this.#preselectByIndex(index)
   }
 
+  #preselectPageUp = (): void => {
+    if (!this.#preselectIndex)
+      this.#preselectByIndex(0)
+
+    const updatedIndex = Math.max(
+      0,
+      this.#preselectIndex! - 10
+    )
+    this.#preselectByIndex(updatedIndex)
+  }
+
+  #preselectPageDown = (): void => {
+    const startingIndex: number = this.#preselectIndex || 0
+
+    const updatedIndex = Math.min(
+      startingIndex + 10,
+      this.#options.length - 1
+    )
+
+    this.#preselectByIndex(updatedIndex)
+  }
+
   #open(): void {
     document.addEventListener('click', this.#clickAway)
     this.#optionsListEl!.classList.add('open')
@@ -248,9 +279,9 @@ export class CustomSelect extends HTMLElement {
   }
 
   #handleOpenKeyboardEvents(event: KeyboardEvent): void {
-    const { key } = event
+    const { key, altKey } = event
 
-    if (isTyping(event)) {
+    if (isTypingLetters(event)) {
       console.log('Typing on open select')
     }
 
@@ -259,16 +290,25 @@ export class CustomSelect extends HTMLElement {
         this.#close()
         break
       case 'ArrowUp':
-        this.#preselectPrev()
+        altKey
+          ? this.#handleSubmit() 
+          : this.#preselectPrev()
         break
       case 'ArrowDown':
         this.#preselectNext()
+        break
+      case 'PageUp':
+        this.#preselectPageUp()
+        break
+      case 'PageDown':
+        this.#preselectPageDown()
         break
       case 'Home':
         this.#preselectByIndex(0)
         break
       case 'End':
         this.#preselectByIndex(this.#options.length - 1)
+        break
       case 'Enter':
       case ' ':
         this.#handleSubmit()
@@ -278,7 +318,7 @@ export class CustomSelect extends HTMLElement {
   #handleClosedKeyboardEvents(event: KeyboardEvent): void {
     const { key } = event
 
-    if (isTyping(event)) {
+    if (isTypingLetters(event)) {
       console.log('Typing on closed select!')
     }
 
@@ -347,6 +387,21 @@ export class CustomSelect extends HTMLElement {
     option.removeAttribute('aria-selected')
   }
 
+  #setMinimumWidth = (): void => {
+    const hostStyles = window.getComputedStyle(this.#shadowRoot!.host)
+    if (!hostStyles.getPropertyValue('--min-width')) {
+      this.#optionsListEl!.style.visibility = 'hidden'
+      this.#optionsListEl!.classList.add('open')
+      const minWidth = this.#optionsListEl!.clientWidth + 'px'
+      this.style.setProperty(
+        '--min-width',
+        minWidth
+      )
+      this.#optionsListEl!.classList.remove('open')
+      this.#optionsListEl!.style.visibility = 'visible'
+    }
+  }
+
   // LIFECYLE EVENTS
 
   connectedCallback(): void {
@@ -370,6 +425,8 @@ export class CustomSelect extends HTMLElement {
         this.#handleSubmit()
       }
     })
+
+    this.#setMinimumWidth()
   }
 
   attributeChangedCallback(
