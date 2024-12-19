@@ -22,15 +22,15 @@ yarn dev
 Ready to jazz up your project? Just import this nifty component and wrap it around a simple select for a fully styleable upgrade.
 
 ```html
-<script type="module" src="path/to/custom-select.js"></script>
+<script type="module" src="path/to/select-upgrade.ts"></script>
 
-<select-wc>
+<select-upgrade>
   <select name="pets" onchange="event => alert(event.target.value)">
     <option value="blue">Dog</option>
     <option value="">Cat</option>
     <option value="3">Goldfish</option>
   </select>
-</select-wc>
+</select-upgrade>
 ```
 
 ## A more complex example
@@ -39,10 +39,10 @@ But still pretty simple!
 
 Example with some custom styles and additional content:
 
-In `photo-select.js`
+In `photo-select.ts`
 
 ```ts
-import { CustomSelect } from './custom-select'
+import { SelectUpgrade } from './path/to/select-upgrade'
 
 const photoSelectStyles = `
   * {
@@ -70,7 +70,7 @@ const photoSelectStyles = `
   }
 `
 
-class PhotoSelect extends CustomSelect {
+class PhotoSelect extends SelectUpgrade {
   constructor() {
     super()
 
@@ -91,7 +91,7 @@ customElements.define('photo-select', PhotoSelect)
 ```
 
 ```html
-<script type="module" src="path/to/photo-select.js"></script>
+<script type="module" src="path/to/photo-select.ts"></script>
 
 <photo-select>
   <select name="options" onchange="event => alert(event.target.value)">
