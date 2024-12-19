@@ -1,5 +1,5 @@
 import { type Option } from '../types'
-import { CustomSelect } from './custom-select'
+import { CustomSelect } from './select-upgrade'
 
 const colorSelectStyles = `
   * {

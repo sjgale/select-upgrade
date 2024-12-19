@@ -1,4 +1,4 @@
-# Select Custom Web Component
+# Select-Upgrade: A custom select component
 
 This project is a custom web component for creating a fully customizable select dropdowns.
 
