@@ -1,0 +1,79 @@
+<html>
+  <head>
+    <title>Selects</title>
+    <meta charset="UTF-8" />
+  </head>
+
+  <body>
+    <div class="comparison-wrapper">
+      <select name="favorite-fruit">
+        <option value="apple">Apple</option>
+        <option value="banana" selected>Banana</option>
+        <option value="kiwi">Kiwi</option>
+        <option value="mango">Mango</option>
+        <option value="orange">Orange</option>
+        <option value="peach">Peach</option>
+        <option value="pear">Pear</option>
+        <option value="pineapple">Pineapple</option>
+        <option value="watermelon">Watermelon</option>
+      </select>
+
+      <custom-select label="Choose your favorite pet">
+        <select name="favorite-pet">
+          <option value=""></option>
+          <option value="dog" selected>Dog</option>
+          <option value="cat">Cat</option>
+          <option value="turle">Turtle</option>
+          <option value="bird">Bird</option>
+          <option value="lizard">Lizard</option>
+        </select>
+      </custom-select>
+
+      <color-select>
+        <select name="color">
+          <option value="" data-bg-color="White">White</option>
+          <option value="blue" data-bg-color="LightSkyBlue">Blue</option>
+          <option value="green" data-bg-color="LightGreen" selected>
+            Green
+          </option>
+          <option value="yellow" data-bg-color="LemonChiffon">Yellow</option>
+          <option value="orange" data-bg-color="PeachPuff">Orange</option>
+          <option value="red" data-bg-color="LightCoral">Red</option>
+          <option value="purple" data-bg-color="Thistle">Purple</option>
+        </select>
+      </color-select>
+
+      <photo-select>
+        <select name="color">
+          <option
+            value="first"
+            data-thumb="https://picsum.photos/seed/first/200"
+          >
+            First option
+          </option>
+          <option
+            value="second"
+            data-thumb="https://picsum.photos/seed/second/200"
+          >
+            Second option
+          </option>
+          <option
+            value="third"
+            data-thumb="https://picsum.photos/seed/third/200"
+            selected
+          >
+            Third Option
+          </option>
+          <option
+            value="fourth"
+            data-thumb="https://picsum.photos/seed/fourth/200"
+          >
+            Fourth Option
+          </option>
+        </select>
+      </photo-select>
+    </div>
+
+    <script src="src/index.ts"></script>
+  </body>
+</html>
