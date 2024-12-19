@@ -100,7 +100,7 @@ const customSelectStyles = `
   }
 `
 
-export class CustomSelect extends HTMLElement {
+export class SelectUpgrade extends HTMLElement {
   static observedAttributes = ['value', 'label']
 
   label: string | undefined = undefined
@@ -435,4 +435,4 @@ export class CustomSelect extends HTMLElement {
   }
 }
 
-customElements.define('custom-select', CustomSelect)
+customElements.define('select-upgrade', SelectUpgrade)

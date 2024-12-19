@@ -1,5 +1,5 @@
 import { type Option } from '../types'
-import { CustomSelect } from './select-upgrade'
+import { SelectUpgrade } from './select-upgrade'
 
 const colorSelectStyles = `
   * {
@@ -14,7 +14,7 @@ const colorSelectStyles = `
   }
 `
 
-class ColorSelect extends CustomSelect {
+class ColorSelect extends SelectUpgrade {
   constructor() {
     super()
 

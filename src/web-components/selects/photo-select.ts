@@ -1,4 +1,4 @@
-import { CustomSelect } from './select-upgrade'
+import { SelectUpgrade } from './select-upgrade'
 
 const photoSelectStyles = `
   * {
@@ -26,7 +26,7 @@ const photoSelectStyles = `
   }
 `
 
-class PhotoSelect extends CustomSelect {
+class PhotoSelect extends SelectUpgrade {
   constructor() {
     super()
 
