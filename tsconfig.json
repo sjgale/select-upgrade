@@ -1,42 +1,25 @@
 {
   "compilerOptions": {
-    // project options
-    "lib": [
-      "ESNext",
-      "dom"
-    ],
-    "rootDir": "src",
-    "outDir": "lib",
-    "removeComments": true,
-    "target": "ES2022",
-
-    // Module resolution
-    "baseUrl": "./",
-    "esModuleInterop": true,
+    "target": "ES2020",
+    "experimentalDecorators": true,
+    "useDefineForClassFields": false,
     "module": "ESNext",
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "skipLibCheck": true,
+
+    /* Bundler mode */
     "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "isolatedModules": true,
+    "moduleDetection": "force",
+    "noEmit": true,
 
-    // Source Map
-    "sourceMap": true,
-    "sourceRoot": "/",
-
-    // Strict Checks
-    "alwaysStrict": true,
-    "allowUnreachableCode": false,
-    "noImplicitAny": true,
-    "strictNullChecks": true,
-
-    // Linter Checks
-    "noImplicitReturns": true,
-    "noUncheckedIndexedAccess": true,
+    /* Linting */
+    "strict": true,
     "noUnusedLocals": true,
-    "noUnusedParameters": false
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedSideEffectImports": true
   },
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.js",
-  ],
-  "exclude": [
-    "node_modules/**/*"
-  ]
+  "include": ["src"]
 }

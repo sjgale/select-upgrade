@@ -1,21 +1,17 @@
 {
-  "name": "vanilla-typescript",
-  "license": "MIT",
-  "version": "1.0.0",
-  "description": "JavaScript and TypeScript example starter project",
-  "main": "index.html",
+  "name": "select-wc",
+  "version": "0.0.0",
+  "type": "module",
   "scripts": {
-    "start": "parcel index.html",
-    "build": "parcel build index.html"
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
   },
   "dependencies": {
-    "parcel-bundler": "1.6.1",
-    "prettier": "^3.4.2"
+    "lit": "^3.2.1"
   },
   "devDependencies": {
-    "typescript": "^5.7.2"
-  },
-  "resolutions": {
-    "@babel/preset-env": "7.13.8"
+    "typescript": "~5.6.2",
+    "vite": "^6.0.3"
   }
 }
