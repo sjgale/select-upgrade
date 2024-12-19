@@ -1,4 +1,7 @@
 {
     "semi": false,
-    "parser": "typescript"
+    "parser": "typescript",
+    "singleQuote": true,
+    "tabWidth": 2,
+    "trailingComma": "es5"
 }

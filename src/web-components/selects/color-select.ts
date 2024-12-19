@@ -1,5 +1,5 @@
-import { type Option } from "../types"
-import { CustomSelect } from "./custom-select"
+import { type Option } from '../types'
+import { CustomSelect } from './custom-select'
 
 const colorSelectStyles = `
   * {
@@ -19,16 +19,16 @@ class ColorSelect extends CustomSelect {
     super()
 
     this.onOptionSelected({
-      original: this.querySelector("option[selected]") as HTMLOptionElement,
-      custom: document.createElement("div"),
+      original: this.querySelector('option[selected]') as HTMLOptionElement,
+      custom: document.createElement('div'),
     })
 
     this.addStyles(colorSelectStyles)
   }
 
   customizeOption = (option: HTMLDivElement, original: HTMLOptionElement) => {
-    const swatch = document.createElement("div")
-    swatch.classList.add("swatch")
+    const swatch = document.createElement('div')
+    swatch.classList.add('swatch')
     swatch.style.backgroundColor = original.value
     option.prepend(swatch)
 
@@ -37,10 +37,10 @@ class ColorSelect extends CustomSelect {
 
   onOptionSelected = (option: Option): void => {
     this.style.setProperty(
-      "--list-background",
-      option.original.dataset.bgColor || "",
+      '--list-background',
+      option.original.dataset.bgColor || ''
     )
   }
 }
 
-customElements.define("color-select", ColorSelect)
+customElements.define('color-select', ColorSelect)

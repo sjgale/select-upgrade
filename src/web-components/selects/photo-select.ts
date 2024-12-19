@@ -1,4 +1,4 @@
-import { CustomSelect } from "./custom-select"
+import { CustomSelect } from './custom-select'
 
 const photoSelectStyles = `
   * {
@@ -34,13 +34,13 @@ class PhotoSelect extends CustomSelect {
   }
 
   customizeOption = (option: HTMLDivElement, original: HTMLOptionElement) => {
-    const thumb = document.createElement("img")
-    thumb.classList.add("thumb")
-    thumb.src = original.dataset.thumb || ""
+    const thumb = document.createElement('img')
+    thumb.classList.add('thumb')
+    thumb.src = original.dataset.thumb || ''
     option.prepend(thumb)
 
     return option
   }
 }
 
-customElements.define("photo-select", PhotoSelect)
+customElements.define('photo-select', PhotoSelect)

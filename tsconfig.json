@@ -5,14 +5,16 @@
       "ESNext",
       "dom"
     ],
+    "rootDir": "src",
     "outDir": "lib",
     "removeComments": true,
-    "target": "ESNext",
+    "target": "ES2022",
 
     // Module resolution
     "baseUrl": "./",
     "esModuleInterop": true,
-    "moduleResolution": "node",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
 
     // Source Map
     "sourceMap": true,

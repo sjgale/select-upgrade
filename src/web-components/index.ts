@@ -1,1 +1,1 @@
-import "./selects"
+import './selects'

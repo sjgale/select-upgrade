@@ -1,8 +1,8 @@
-import { type Option } from "../types"
+import { type Option } from '../types'
 
 export function getPrevIndex(
   currentIndex: number | null,
-  options: Option[],
+  options: Option[]
 ): number {
   if (currentIndex === null) {
     return options.length - 1
@@ -15,7 +15,7 @@ export function getPrevIndex(
 
 export function getNextIndex(
   currentIndex: number | null,
-  options: Option[],
+  options: Option[]
 ): number {
   if (currentIndex === null) {
     return 0
@@ -27,7 +27,7 @@ export function getNextIndex(
 }
 
 export function hasPreselect(preselectIndex: number | null): boolean {
-  return typeof preselectIndex === "number" && preselectIndex > -1
+  return typeof preselectIndex === 'number' && preselectIndex > -1
 }
 
 export function getRandomNumber(): number {

@@ -3,9 +3,9 @@ import {
   getPrevIndex,
   getNextIndex,
   hasPreselect,
-} from "../utils"
-import { isOpenKey, isTyping } from "../utils/keyboard"
-import { type Option } from "../types"
+} from '../utils'
+import { isOpenKey, isTyping } from '../utils/keyboard'
+import { type Option } from '../types'
 
 const customSelectStyles = `
   :host {
@@ -92,7 +92,7 @@ const customSelectStyles = `
 `
 
 export class CustomSelect extends HTMLElement {
-  static observedAttributes = ["value", "label"]
+  static observedAttributes = ['value', 'label']
 
   label: string | undefined = undefined
   value: string | undefined = undefined
@@ -108,13 +108,13 @@ export class CustomSelect extends HTMLElement {
   #labelEl?: HTMLDivElement
 
   get #selectEl(): HTMLSelectElement {
-    return this.querySelector("select") as HTMLSelectElement
+    return this.querySelector('select') as HTMLSelectElement
   }
   get #selectedOption(): HTMLDivElement | null {
-    return this.querySelector(".option.selected")
+    return this.querySelector('.option.selected')
   }
   get #isOpen(): boolean {
-    return this.#optionsListEl!.classList.contains("open")
+    return this.#optionsListEl!.classList.contains('open')
   }
 
   constructor() {
@@ -125,31 +125,31 @@ export class CustomSelect extends HTMLElement {
   #setup(): void {
     const optionListId = `option-list-${getRandomNumber()}`
 
-    this.#shadowRoot = this.attachShadow({ mode: "open" })
+    this.#shadowRoot = this.attachShadow({ mode: 'open' })
     this.addStyles(customSelectStyles)
 
-    this.#wrapperEl = document.createElement("div")
-    this.#wrapperEl.classList.add("select-wrapper")
+    this.#wrapperEl = document.createElement('div')
+    this.#wrapperEl.classList.add('select-wrapper')
 
-    this.#comboboxEl = document.createElement("div")
-    this.#comboboxEl.classList.add("combobox")
-    this.#comboboxEl.textContent = this.#selectedOption?.textContent || ""
+    this.#comboboxEl = document.createElement('div')
+    this.#comboboxEl.classList.add('combobox')
+    this.#comboboxEl.textContent = this.#selectedOption?.textContent || ''
     this.#comboboxEl.tabIndex = 0
-    this.#comboboxEl.role = "combobox"
-    this.#comboboxEl.setAttribute("aria-controls", optionListId)
-    this.#comboboxEl.setAttribute("aria-expanded", "false")
+    this.#comboboxEl.role = 'combobox'
+    this.#comboboxEl.setAttribute('aria-controls', optionListId)
+    this.#comboboxEl.setAttribute('aria-expanded', 'false')
 
-    this.#optionsListEl = document.createElement("div")
+    this.#optionsListEl = document.createElement('div')
     this.#optionsListEl.id = optionListId
-    this.#optionsListEl.classList.add("option-list")
-    this.#optionsListEl.role = "listbox"
+    this.#optionsListEl.classList.add('option-list')
+    this.#optionsListEl.role = 'listbox'
 
     if (!!this.label) {
       const labelId = `combobox-label-${getRandomNumber()}`
-      this.#labelEl = document.createElement("div")
+      this.#labelEl = document.createElement('div')
       this.#labelEl.id = labelId
       this.#labelEl.textContent = this.label
-      this.#comboboxEl.setAttribute("aria-labelledby", labelId)
+      this.#comboboxEl.setAttribute('aria-labelledby', labelId)
       this.#wrapperEl.appendChild(this.#labelEl)
     }
 
@@ -163,17 +163,17 @@ export class CustomSelect extends HTMLElement {
   onOptionSelected = (option: Option): void => {}
   customizeOption = (
     option: HTMLDivElement,
-    original: HTMLOptionElement,
+    original: HTMLOptionElement
   ): HTMLDivElement => option
 
   addStyles = (newStyles: string): void => {
     if (!this.#stylesEl) {
-      this.#stylesEl = document.createElement("style")
+      this.#stylesEl = document.createElement('style')
       this.#shadowRoot!.appendChild(this.#stylesEl)
     }
 
     this.#stylesEl.textContent =
-      this.#stylesEl.textContent?.concat(newStyles) || ""
+      this.#stylesEl.textContent?.concat(newStyles) || ''
   }
 
   // PRIVATE METHODS
@@ -181,18 +181,18 @@ export class CustomSelect extends HTMLElement {
   #preselectOption = (preselectOption: Option | null | undefined): void => {
     //reset the preselect
     this.#preselectIndex = null
-    this.#comboboxEl!.removeAttribute("aria-activedescendant")
+    this.#comboboxEl!.removeAttribute('aria-activedescendant')
 
     this.#options.forEach((option, currentIndex): void => {
       if (option.custom === preselectOption?.custom) {
-        option.custom.classList.add("preselected")
+        option.custom.classList.add('preselected')
         this.#comboboxEl!.setAttribute(
-          "aria-activedescendant",
-          option.custom.id,
+          'aria-activedescendant',
+          option.custom.id
         )
         this.#preselectIndex = currentIndex
       } else {
-        option.custom.classList.remove("preselected")
+        option.custom.classList.remove('preselected')
       }
     })
   }
@@ -213,15 +213,15 @@ export class CustomSelect extends HTMLElement {
   }
 
   #open(): void {
-    document.addEventListener("click", this.#clickAway)
-    this.#optionsListEl!.classList.add("open")
+    document.addEventListener('click', this.#clickAway)
+    this.#optionsListEl!.classList.add('open')
     this.#preselectOption(null)
   }
 
   #close(): void {
-    document.removeEventListener("click", this.#clickAway)
+    document.removeEventListener('click', this.#clickAway)
     this.#preselectOption(null)
-    this.#optionsListEl!.classList.remove("open")
+    this.#optionsListEl!.classList.remove('open')
   }
 
   #toggleOpen = (): void => {
@@ -231,14 +231,14 @@ export class CustomSelect extends HTMLElement {
   #setValue = (value: string): void => {
     if (this.#selectEl) {
       this.#selectEl.value = value
-      this.#selectEl.dispatchEvent(new Event("change"))
-      this.setAttribute("value", value)
+      this.#selectEl.dispatchEvent(new Event('change'))
+      this.setAttribute('value', value)
     }
   }
 
   #handleKeydown = (event: KeyboardEvent): void => {
     // Allow focus and blur to handle Tab
-    if (event.key === "tab") return
+    if (event.key === 'tab') return
 
     if (this.#isOpen) {
       this.#handleOpenKeyboardEvents(event)
@@ -251,26 +251,26 @@ export class CustomSelect extends HTMLElement {
     const { key } = event
 
     if (isTyping(event)) {
-      console.log("Typing on open select")
+      console.log('Typing on open select')
     }
 
     switch (key) {
-      case "Escape":
+      case 'Escape':
         this.#close()
         break
-      case "ArrowUp":
+      case 'ArrowUp':
         this.#preselectPrev()
         break
-      case "ArrowDown":
+      case 'ArrowDown':
         this.#preselectNext()
         break
-      case "Home":
+      case 'Home':
         this.#preselectByIndex(0)
         break
-      case "End":
+      case 'End':
         this.#preselectByIndex(this.#options.length - 1)
-      case "Enter":
-      case " ":
+      case 'Enter':
+      case ' ':
         this.#handleSubmit()
     }
   }
@@ -279,7 +279,7 @@ export class CustomSelect extends HTMLElement {
     const { key } = event
 
     if (isTyping(event)) {
-      console.log("Typing on closed select!")
+      console.log('Typing on closed select!')
     }
 
     if (isOpenKey(key)) {
@@ -303,17 +303,17 @@ export class CustomSelect extends HTMLElement {
   }
 
   #buildCustomOptionElement = (original: HTMLOptionElement): HTMLDivElement => {
-    const option = document.createElement("div")
-    option.classList.add("option")
+    const option = document.createElement('div')
+    option.classList.add('option')
     option.id = `option=${getRandomNumber()}`
-    option.role = "option"
+    option.role = 'option'
     option.textContent = original.textContent
-    option.setAttribute("value", original.value)
-    option.addEventListener("click", (event: Event): void => {
-      this.#setValue(original.getAttribute("value") || "")
+    option.setAttribute('value', original.value)
+    option.addEventListener('click', (event: Event): void => {
+      this.#setValue(original.getAttribute('value') || '')
     })
-    option.addEventListener("mouseenter", (event: MouseEvent): void => {
-      console.log("mouseenter")
+    option.addEventListener('mouseenter', (event: MouseEvent): void => {
+      console.log('mouseenter')
       this.#preselectOption({ custom: option, original })
     })
 
@@ -336,28 +336,28 @@ export class CustomSelect extends HTMLElement {
   }
 
   #selectOption = (option: HTMLDivElement): void => {
-    option.classList.add("selected")
-    option.setAttribute("aria-selected", "true")
-    this.setAttribute("value", option.getAttribute("value") || "")
+    option.classList.add('selected')
+    option.setAttribute('aria-selected', 'true')
+    this.setAttribute('value', option.getAttribute('value') || '')
     this.#comboboxEl!.innerHTML = option.innerHTML
   }
 
   #unselectOption = (option: HTMLDivElement): void => {
-    option.classList.remove("selected")
-    option.removeAttribute("aria-selected")
+    option.classList.remove('selected')
+    option.removeAttribute('aria-selected')
   }
 
   // LIFECYLE EVENTS
 
   connectedCallback(): void {
     this.#buildOptionList()
-    this.#comboboxEl!.addEventListener("click", this.#toggleOpen)
-    this.#comboboxEl!.addEventListener("keydown", this.#handleKeydown)
+    this.#comboboxEl!.addEventListener('click', this.#toggleOpen)
+    this.#comboboxEl!.addEventListener('keydown', this.#handleKeydown)
 
     this.childNodes.forEach((childNode): void => {
       if (childNode instanceof HTMLSelectElement) {
-        childNode.addEventListener("change", (event: Event): void => {
-          this.setAttribute("value", (event.target as HTMLSelectElement).value)
+        childNode.addEventListener('change', (event: Event): void => {
+          this.setAttribute('value', (event.target as HTMLSelectElement).value)
           if (this.#isOpen) {
             this.#toggleOpen()
           }
@@ -365,7 +365,7 @@ export class CustomSelect extends HTMLElement {
       }
     })
 
-    this.addEventListener("blur", (event: FocusEvent): void => {
+    this.addEventListener('blur', (event: FocusEvent): void => {
       if (this.#isOpen) {
         this.#handleSubmit()
       }
@@ -375,11 +375,11 @@ export class CustomSelect extends HTMLElement {
   attributeChangedCallback(
     name: string,
     oldValue: string,
-    newValue: string,
+    newValue: string
   ): void {
-    if (name === "value") {
+    if (name === 'value') {
       this.#options.forEach((option): void => {
-        if (option.original.getAttribute("value") === newValue) {
+        if (option.original.getAttribute('value') === newValue) {
           this.#selectOption(option.custom)
           this.onOptionSelected(option)
         } else {
@@ -390,4 +390,4 @@ export class CustomSelect extends HTMLElement {
   }
 }
 
-customElements.define("custom-select", CustomSelect)
+customElements.define('custom-select', CustomSelect)
