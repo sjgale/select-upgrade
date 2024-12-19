@@ -3,9 +3,9 @@ import {
   getPrevIndex,
   getNextIndex,
   hasPreselect,
-} from '../utils';
-import { isOpenKey, isTyping } from '../utils/keyboard';
-import { type Option } from '../types';
+} from "../utils"
+import { isOpenKey, isTyping } from "../utils/keyboard"
+import { type Option } from "../types"
 
 const customSelectStyles = `
   :host {
@@ -89,305 +89,305 @@ const customSelectStyles = `
     position: absolute;
     top: 7.5px;
   }
-`;
+`
 
 export class CustomSelect extends HTMLElement {
-  static observedAttributes = ['value', 'label'];
+  static observedAttributes = ["value", "label"]
 
-  label: string | undefined = undefined;
-  value: string | undefined = undefined;
+  label: string | undefined = undefined
+  value: string | undefined = undefined
 
-  #options: Option[] = [];
-  #preselectIndex: number | null = null;
+  #options: Option[] = []
+  #preselectIndex: number | null = null
 
-  #optionsListEl?: HTMLDivElement;
-  #stylesEl?: HTMLStyleElement;
-  #shadowRoot?: ShadowRoot;
-  #comboboxEl?: HTMLDivElement;
-  #wrapperEl?: HTMLDivElement;
-  #labelEl?: HTMLDivElement;
+  #optionsListEl?: HTMLDivElement
+  #stylesEl?: HTMLStyleElement
+  #shadowRoot?: ShadowRoot
+  #comboboxEl?: HTMLDivElement
+  #wrapperEl?: HTMLDivElement
+  #labelEl?: HTMLDivElement
 
   get #selectEl(): HTMLSelectElement {
-    return this.querySelector('select') as HTMLSelectElement;
+    return this.querySelector("select") as HTMLSelectElement
   }
   get #selectedOption(): HTMLDivElement | null {
-    return this.querySelector('.option.selected');
+    return this.querySelector(".option.selected")
   }
   get #isOpen(): boolean {
-    return this.#optionsListEl!.classList.contains('open');
+    return this.#optionsListEl!.classList.contains("open")
   }
 
   constructor() {
-    super();
-    this.#setup();
+    super()
+    this.#setup()
   }
 
   #setup(): void {
-    const optionListId = `option-list-${getRandomNumber()}`;
+    const optionListId = `option-list-${getRandomNumber()}`
 
-    this.#shadowRoot = this.attachShadow({ mode: 'open' });
-    this.addStyles(customSelectStyles);
+    this.#shadowRoot = this.attachShadow({ mode: "open" })
+    this.addStyles(customSelectStyles)
 
-    this.#wrapperEl = document.createElement('div');
-    this.#wrapperEl.classList.add('select-wrapper');
+    this.#wrapperEl = document.createElement("div")
+    this.#wrapperEl.classList.add("select-wrapper")
 
-    this.#comboboxEl = document.createElement('div');
-    this.#comboboxEl.classList.add('combobox');
-    this.#comboboxEl.textContent = this.#selectedOption?.textContent || '';
-    this.#comboboxEl.tabIndex = 0;
-    this.#comboboxEl.role = 'combobox';
-    this.#comboboxEl.setAttribute('aria-controls', optionListId);
-    this.#comboboxEl.setAttribute('aria-expanded', 'false');
+    this.#comboboxEl = document.createElement("div")
+    this.#comboboxEl.classList.add("combobox")
+    this.#comboboxEl.textContent = this.#selectedOption?.textContent || ""
+    this.#comboboxEl.tabIndex = 0
+    this.#comboboxEl.role = "combobox"
+    this.#comboboxEl.setAttribute("aria-controls", optionListId)
+    this.#comboboxEl.setAttribute("aria-expanded", "false")
 
-    this.#optionsListEl = document.createElement('div');
-    this.#optionsListEl.id = optionListId;
-    this.#optionsListEl.classList.add('option-list');
-    this.#optionsListEl.role = 'listbox';
+    this.#optionsListEl = document.createElement("div")
+    this.#optionsListEl.id = optionListId
+    this.#optionsListEl.classList.add("option-list")
+    this.#optionsListEl.role = "listbox"
 
     if (!!this.label) {
-      const labelId = `combobox-label-${getRandomNumber()}`;
-      this.#labelEl = document.createElement('div');
-      this.#labelEl.id = labelId;
-      this.#labelEl.textContent = this.label;
-      this.#comboboxEl.setAttribute('aria-labelledby', labelId);
-      this.#wrapperEl.appendChild(this.#labelEl);
+      const labelId = `combobox-label-${getRandomNumber()}`
+      this.#labelEl = document.createElement("div")
+      this.#labelEl.id = labelId
+      this.#labelEl.textContent = this.label
+      this.#comboboxEl.setAttribute("aria-labelledby", labelId)
+      this.#wrapperEl.appendChild(this.#labelEl)
     }
 
-    this.#wrapperEl.appendChild(this.#comboboxEl);
-    this.#wrapperEl?.appendChild(this.#optionsListEl);
-    this.#shadowRoot.appendChild(this.#wrapperEl);
+    this.#wrapperEl.appendChild(this.#comboboxEl)
+    this.#wrapperEl?.appendChild(this.#optionsListEl)
+    this.#shadowRoot.appendChild(this.#wrapperEl)
   }
 
   // PUBLIC METHODS
 
-  onOptionSelected = (option: Option): void => {};
+  onOptionSelected = (option: Option): void => {}
   customizeOption = (
     option: HTMLDivElement,
-    original: HTMLOptionElement
-  ): HTMLDivElement => option;
+    original: HTMLOptionElement,
+  ): HTMLDivElement => option
 
   addStyles = (newStyles: string): void => {
     if (!this.#stylesEl) {
-      this.#stylesEl = document.createElement('style');
-      this.#shadowRoot!.appendChild(this.#stylesEl);
+      this.#stylesEl = document.createElement("style")
+      this.#shadowRoot!.appendChild(this.#stylesEl)
     }
 
     this.#stylesEl.textContent =
-      this.#stylesEl.textContent?.concat(newStyles) || '';
-  };
+      this.#stylesEl.textContent?.concat(newStyles) || ""
+  }
 
   // PRIVATE METHODS
 
   #preselectOption = (preselectOption: Option | null | undefined): void => {
     //reset the preselect
-    this.#preselectIndex = null;
-    this.#comboboxEl!.removeAttribute('aria-activedescendant');
+    this.#preselectIndex = null
+    this.#comboboxEl!.removeAttribute("aria-activedescendant")
 
     this.#options.forEach((option, currentIndex): void => {
       if (option.custom === preselectOption?.custom) {
-        option.custom.classList.add('preselected');
+        option.custom.classList.add("preselected")
         this.#comboboxEl!.setAttribute(
-          'aria-activedescendant',
-          option.custom.id
-        );
-        this.#preselectIndex = currentIndex;
+          "aria-activedescendant",
+          option.custom.id,
+        )
+        this.#preselectIndex = currentIndex
       } else {
-        option.custom.classList.remove('preselected');
+        option.custom.classList.remove("preselected")
       }
-    });
-  };
+    })
+  }
 
   #preselectByIndex = (index: number): void => {
-    const optionToSelect = this.#options?.[index];
-    this.#preselectOption(optionToSelect);
-  };
+    const optionToSelect = this.#options?.[index]
+    this.#preselectOption(optionToSelect)
+  }
 
   #preselectNext = () => {
-    const index = getNextIndex(this.#preselectIndex, this.#options);
-    this.#preselectByIndex(index);
-  };
+    const index = getNextIndex(this.#preselectIndex, this.#options)
+    this.#preselectByIndex(index)
+  }
 
   #preselectPrev = () => {
-    const index = getPrevIndex(this.#preselectIndex, this.#options);
-    this.#preselectByIndex(index);
-  };
+    const index = getPrevIndex(this.#preselectIndex, this.#options)
+    this.#preselectByIndex(index)
+  }
 
   #open(): void {
-    document.addEventListener('click', this.#clickAway);
-    this.#optionsListEl!.classList.add('open');
-    this.#preselectOption(null);
+    document.addEventListener("click", this.#clickAway)
+    this.#optionsListEl!.classList.add("open")
+    this.#preselectOption(null)
   }
 
   #close(): void {
-    document.removeEventListener('click', this.#clickAway);
-    this.#preselectOption(null);
-    this.#optionsListEl!.classList.remove('open');
+    document.removeEventListener("click", this.#clickAway)
+    this.#preselectOption(null)
+    this.#optionsListEl!.classList.remove("open")
   }
 
   #toggleOpen = (): void => {
-    this.#isOpen ? this.#close() : this.#open();
-  };
+    this.#isOpen ? this.#close() : this.#open()
+  }
 
   #setValue = (value: string): void => {
     if (this.#selectEl) {
-      this.#selectEl.value = value;
-      this.#selectEl.dispatchEvent(new Event('change'));
-      this.setAttribute('value', value);
+      this.#selectEl.value = value
+      this.#selectEl.dispatchEvent(new Event("change"))
+      this.setAttribute("value", value)
     }
-  };
+  }
 
   #handleKeydown = (event: KeyboardEvent): void => {
     // Allow focus and blur to handle Tab
-    if (event.key === 'tab') return;
+    if (event.key === "tab") return
 
     if (this.#isOpen) {
-      this.#handleOpenKeyboardEvents(event);
+      this.#handleOpenKeyboardEvents(event)
     } else {
-      this.#handleClosedKeyboardEvents(event);
+      this.#handleClosedKeyboardEvents(event)
     }
-  };
+  }
 
   #handleOpenKeyboardEvents(event: KeyboardEvent): void {
-    const { key } = event;
+    const { key } = event
 
     if (isTyping(event)) {
-      console.log('Typing on open select');
+      console.log("Typing on open select")
     }
 
     switch (key) {
-      case 'Escape':
-        this.#close();
-        break;
-      case 'ArrowUp':
-        this.#preselectPrev();
-        break;
-      case 'ArrowDown':
-        this.#preselectNext();
-        break;
-      case 'Home':
-        this.#preselectByIndex(0);
-        break;
-      case 'End':
-        this.#preselectByIndex(this.#options.length - 1);
-      case 'Enter':
-      case ' ':
-        this.#handleSubmit();
+      case "Escape":
+        this.#close()
+        break
+      case "ArrowUp":
+        this.#preselectPrev()
+        break
+      case "ArrowDown":
+        this.#preselectNext()
+        break
+      case "Home":
+        this.#preselectByIndex(0)
+        break
+      case "End":
+        this.#preselectByIndex(this.#options.length - 1)
+      case "Enter":
+      case " ":
+        this.#handleSubmit()
     }
   }
 
   #handleClosedKeyboardEvents(event: KeyboardEvent): void {
-    const { key } = event;
+    const { key } = event
 
     if (isTyping(event)) {
-      console.log('Typing on closed select!');
+      console.log("Typing on closed select!")
     }
 
     if (isOpenKey(key)) {
-      this.#open();
+      this.#open()
     }
   }
 
   #handleSubmit = (): void => {
     if (hasPreselect(this.#preselectIndex)) {
-      const option = this.#options[this.#preselectIndex!]!.original;
-      this.#setValue(option!.value);
+      const option = this.#options[this.#preselectIndex!]!.original
+      this.#setValue(option!.value)
     } else {
-      this.#close();
+      this.#close()
     }
-  };
+  }
 
   #clickAway = (event: MouseEvent): void => {
     if (this.#isOpen && event.target !== this) {
-      this.#close();
+      this.#close()
     }
-  };
+  }
 
   #buildCustomOptionElement = (original: HTMLOptionElement): HTMLDivElement => {
-    const option = document.createElement('div');
-    option.classList.add('option');
-    option.id = `option=${getRandomNumber()}`;
-    option.role = 'option';
-    option.textContent = original.textContent;
-    option.setAttribute('value', original.value);
-    option.addEventListener('click', (event: Event): void => {
-      this.#setValue(original.getAttribute('value') || '');
-    });
-    option.addEventListener('mouseenter', (event: MouseEvent): void => {
-      console.log('mouseenter');
-      this.#preselectOption({ custom: option, original });
-    });
+    const option = document.createElement("div")
+    option.classList.add("option")
+    option.id = `option=${getRandomNumber()}`
+    option.role = "option"
+    option.textContent = original.textContent
+    option.setAttribute("value", original.value)
+    option.addEventListener("click", (event: Event): void => {
+      this.#setValue(original.getAttribute("value") || "")
+    })
+    option.addEventListener("mouseenter", (event: MouseEvent): void => {
+      console.log("mouseenter")
+      this.#preselectOption({ custom: option, original })
+    })
 
-    return this.customizeOption(option, original);
-  };
+    return this.customizeOption(option, original)
+  }
 
   #buildOptionList = () => {
     this.#selectEl!.childNodes.forEach((original): void => {
       if (original instanceof HTMLOptionElement) {
-        const custom = this.#buildCustomOptionElement(original);
+        const custom = this.#buildCustomOptionElement(original)
 
         if (original.selected) {
-          this.#selectOption(custom);
+          this.#selectOption(custom)
         }
 
-        this.#optionsListEl!.appendChild(custom);
-        this.#options.push({ custom, original });
+        this.#optionsListEl!.appendChild(custom)
+        this.#options.push({ custom, original })
       }
-    });
-  };
+    })
+  }
 
   #selectOption = (option: HTMLDivElement): void => {
-    option.classList.add('selected');
-    option.setAttribute('aria-selected', 'true');
-    this.setAttribute('value', option.getAttribute('value') || '');
-    this.#comboboxEl!.innerHTML = option.innerHTML;
-  };
+    option.classList.add("selected")
+    option.setAttribute("aria-selected", "true")
+    this.setAttribute("value", option.getAttribute("value") || "")
+    this.#comboboxEl!.innerHTML = option.innerHTML
+  }
 
   #unselectOption = (option: HTMLDivElement): void => {
-    option.classList.remove('selected');
-    option.removeAttribute('aria-selected');
-  };
+    option.classList.remove("selected")
+    option.removeAttribute("aria-selected")
+  }
 
   // LIFECYLE EVENTS
 
   connectedCallback(): void {
-    this.#buildOptionList();
-    this.#comboboxEl!.addEventListener('click', this.#toggleOpen);
-    this.#comboboxEl!.addEventListener('keydown', this.#handleKeydown);
+    this.#buildOptionList()
+    this.#comboboxEl!.addEventListener("click", this.#toggleOpen)
+    this.#comboboxEl!.addEventListener("keydown", this.#handleKeydown)
 
     this.childNodes.forEach((childNode): void => {
       if (childNode instanceof HTMLSelectElement) {
-        childNode.addEventListener('change', (event: Event): void => {
-          this.setAttribute('value', (event.target as HTMLSelectElement).value);
+        childNode.addEventListener("change", (event: Event): void => {
+          this.setAttribute("value", (event.target as HTMLSelectElement).value)
           if (this.#isOpen) {
-            this.#toggleOpen();
+            this.#toggleOpen()
           }
-        });
+        })
       }
-    });
+    })
 
-    this.addEventListener('blur', (event: FocusEvent): void => {
+    this.addEventListener("blur", (event: FocusEvent): void => {
       if (this.#isOpen) {
-        this.#handleSubmit();
+        this.#handleSubmit()
       }
-    });
+    })
   }
 
   attributeChangedCallback(
     name: string,
     oldValue: string,
-    newValue: string
+    newValue: string,
   ): void {
-    if (name === 'value') {
+    if (name === "value") {
       this.#options.forEach((option): void => {
-        if (option.original.getAttribute('value') === newValue) {
-          this.#selectOption(option.custom);
-          this.onOptionSelected(option);
+        if (option.original.getAttribute("value") === newValue) {
+          this.#selectOption(option.custom)
+          this.onOptionSelected(option)
         } else {
-          this.#unselectOption(option.custom);
+          this.#unselectOption(option.custom)
         }
-      });
+      })
     }
   }
 }
 
-customElements.define('custom-select', CustomSelect);
+customElements.define("custom-select", CustomSelect)

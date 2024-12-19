@@ -1,1 +1,1 @@
-import './custom-select';
+import "./custom-select"

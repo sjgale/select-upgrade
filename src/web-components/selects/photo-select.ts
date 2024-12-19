@@ -1,4 +1,4 @@
-import { CustomSelect } from './custom-select';
+import { CustomSelect } from "./custom-select"
 
 const photoSelectStyles = `
   * {
@@ -24,23 +24,23 @@ const photoSelectStyles = `
     margin-right: 10px;
     width: 50px;
   }
-`;
+`
 
 class PhotoSelect extends CustomSelect {
   constructor() {
-    super();
+    super()
 
-    this.addStyles(photoSelectStyles);
+    this.addStyles(photoSelectStyles)
   }
 
   customizeOption = (option: HTMLDivElement, original: HTMLOptionElement) => {
-    const thumb = document.createElement('img');
-    thumb.classList.add('thumb');
-    thumb.src = original.dataset.thumb || '';
-    option.prepend(thumb);
+    const thumb = document.createElement("img")
+    thumb.classList.add("thumb")
+    thumb.src = original.dataset.thumb || ""
+    option.prepend(thumb)
 
-    return option;
-  };
+    return option
+  }
 }
 
-customElements.define('photo-select', PhotoSelect);
+customElements.define("photo-select", PhotoSelect)

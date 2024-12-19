@@ -7,7 +7,7 @@
     ],
     "outDir": "lib",
     "removeComments": true,
-    "target": "ES6",
+    "target": "ESNext",
 
     // Module resolution
     "baseUrl": "./",

@@ -1,4 +1,4 @@
 export type Option = {
-  custom: HTMLDivElement;
-  original: HTMLOptionElement;
-};
+  custom: HTMLDivElement
+  original: HTMLOptionElement
+}

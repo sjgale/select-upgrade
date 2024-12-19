@@ -1,2 +1,2 @@
-import './styles.css';
-import './web-components';
+import "./styles.css"
+import "./web-components"
